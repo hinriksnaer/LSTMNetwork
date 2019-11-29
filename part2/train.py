@@ -17,11 +17,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import os
+import sys
+sys.path.append("..")
+sys.path.append(".")
 import time
 from datetime import datetime
 import argparse
 import pandas as pd
+import os
 
 import numpy as np
 
@@ -29,10 +32,9 @@ import torch
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-from dataset import TextDataset
-from model import TextGenerationModel
+from part2.dataset import TextDataset
+from part2.model import TextGenerationModel
 
-import multiprocessing
 ################################################################################
 
 def train(config):
@@ -61,9 +63,6 @@ def train(config):
     # Setup the loss and optimizer
     criterion = torch.nn.CrossEntropyLoss()  # fixme
     optimizer = torch.optim.RMSprop(model.parameters(), lr=config.learning_rate)  # fixme
-
-    # added for vscode debug functionality
-    multiprocessing.set_start_method('spawn', True)
 
     total_steps = 0
 

@@ -18,23 +18,21 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import sys
+sys.path.append("..")
+sys.path.append(".")
 import argparse
 import time
 from datetime import datetime
 import numpy as np
-# Added for vscode debug functionality
-import multiprocessing
 
 import torch
 from torch.utils.data import DataLoader
 
-from dataset import PalindromeDataset
-from vanilla_rnn import VanillaRNN
-from lstm import LSTM
+from part1.dataset import PalindromeDataset
+from part1.vanilla_rnn import VanillaRNN
+from part1.lstm import LSTM
 
-"""part1."""
-"""part1."""
-"""part1."""
 
 # You may want to look into tensorboard for logging
 # from torch.utils.tensorboard import SummaryWriter
@@ -78,10 +76,6 @@ def train(config):
     # Setup the loss and optimizer
     criterion = torch.nn.CrossEntropyLoss()  
     optimizer = torch.optim.RMSprop(model.parameters(), lr=config.learning_rate)
-
-
-    # added for vscode debug functionality
-    multiprocessing.set_start_method('spawn', True)
 
     for step, (batch_inputs, batch_targets) in enumerate(data_loader):
 
