@@ -156,6 +156,7 @@ def train(config):
                         text = torch.cat((text, pred), 1)
                         stuff = torch.argmax(text[0], 1)
                         sentence = dataset.convert_to_string(stuff.tolist())
+                    print(sentence)
                     sampling_summary.append([total_steps, sentence])
 
                 if total_steps == config.train_steps:
