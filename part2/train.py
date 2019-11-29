@@ -21,7 +21,7 @@ import os
 import time
 from datetime import datetime
 import argparse
-import csv
+import pandas as pd
 
 import numpy as np
 
@@ -128,7 +128,7 @@ def train(config):
                 examples_per_second = config.batch_size/float(t2-t1)
 
                 if total_steps % config.print_every == 0:
-                    training_summary.append([total_steps, accuracy, loss])
+                    training_summary.append([total_steps, accuracy, loss.item()])
                     print("[{}] Train Step {:04d}/{:04d}, Batch Size = {}, Examples/Sec = {:.2f}, "
                         "Accuracy = {:.2f}, Loss = {:.3f}".format(
                             datetime.now().strftime("%Y-%m-%d %H:%M"), total_steps,
@@ -166,17 +166,16 @@ def train(config):
 
     print('Done training.')
     print('Storing data')
+
     if not os.path.exists(config.summary_path):
         os.makedirs(config.summary_path)
 
-    with open(config.summary_path+"training_summary.csv", "wb") as f:
-        writer = csv.writer(f)
-        writer.writerows(training_summary)
-    
-    with open(config.summary_path+"sampling_summary.csv", "wb") as f:
-        writer = csv.writer(f)
-        writer.writerows(sampling_summary)
+    training_summary = pd.DataFrame(training_summary)
+    sampling_summary = pd.DataFrame(sampling_summary)
 
+    training_summary.to_csv(config.summary_path+"training_summary.csv", header = False, index = False, sep=';')
+    sampling_summary.to_csv(config.summary_path+"sampling_summary.csv", header = False, index = False, sep=';')
+    print('Finished')
  ################################################################################
  ################################################################################
 
